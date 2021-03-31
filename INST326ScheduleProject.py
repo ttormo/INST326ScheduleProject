@@ -16,5 +16,6 @@ class Schedule :
     """
     def __init__(self, name):
         self.name = name
+"""This is our practice document."""
 
     
