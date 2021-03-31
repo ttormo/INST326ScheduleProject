@@ -8,4 +8,8 @@ class User:
     Name (str): The persons name
     Classes (set of Person) : current classes of the user
     """
+
+    def __init__(self, name):
+        self.name = name
+
     
