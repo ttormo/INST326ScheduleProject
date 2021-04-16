@@ -13,7 +13,8 @@ class Schedule:
         """ Creates a new instance of the Schedule class.
 
         Args:
-            file (string): A string containing the path to a CSV file.
+            file (string): The path to a CSV file containing the user's partially completed course schedule.
+            This includes each course's name (ex. PSYC355), section number, day(s) of the week, and start/stop times
 
         """
 
@@ -27,7 +28,7 @@ class Schedule:
 
 
 class Class:
-    """ A Class.
+    """ Course information drawn from the user's schedule file.
 
     Attributes:
         code (string): A string containing the class code.
@@ -42,13 +43,15 @@ class Class:
         """ Creates a new instance of a Class.
 
         Args:
-            file (string): a string containing the filepath of a CSV file.
+            file (string): The path to a CSV file containing the user's partially completed course schedule.
+            This includes each course's name (ex. PSYC355), section number, day(s) of the week, and start/stop times
 
         """
 
 
 class Day:
-    """ A Day.
+    """ This class allows the day of the week, start time, and end time to be specified for the student's 
+    courses based on their provided file.
 
     Attributes:
         name (string): a string containing the name of the day.
@@ -61,7 +64,8 @@ class Day:
         """ Creates a new instance of the Day class.
 
        Args:
-           file: a string containing the path to a CSV file.
+           file (string): The path to a CSV file containing the user's course schedule they are working on.
+           This includes each course's name (ex. PSYC355), section number, day(s) of the week, and start/stop times
 
        """
 
@@ -103,7 +107,8 @@ def credit_count(current_schedule):
 
 
 def main(major_link, student_schedule):
-    """ Create two Schedules based on a URL and a CSV file.
+    """ Create two Schedules based on a URL to a UMD course offerings page and a CSV file of the student's
+    partially complete schedule.
 
     Args:
         major_link (string): a link to the major's Schedule of Classes.
