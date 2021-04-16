@@ -2,13 +2,14 @@
 
 
 class Schedule:
-    """ A schedule containing information on associated Courses. The student
-            will input a file containing Course information, which will be
-            used to create a new Schedule instance that represents the
-            schedule that they have already built. Another Schedule instance
-            will be created based off of information found in the URL that
-            was input in main(), representing the list of courses for a
-            given UMD major.
+    """ A schedule containing information on associated Courses.
+
+        The student will input a file containing Course information,
+        which will beused to create a new Schedule instance that
+        represents the schedule that they have already built.
+        Another Schedule instance will be created based off of
+        information found in the URL that was input in main(),
+        representing the list of courses for a given UMD major.
 
     Attributes:
         courses (list of Course objects): the classes in the student's schedule.
@@ -65,8 +66,9 @@ class Course:
 
 class Day:
     """ This class allows the day of the week, start time, and end time to be
-    specified for the student's courses based on their provided file. Each
-    instance of the Course class will have at least one associated Day class.
+    specified for the student's courses based on their provided file.
+
+    Each instance of the Course class will have at least one associated Day class.
 
     Attributes:
         name (string): a string containing the name of the day.
@@ -125,9 +127,10 @@ def credit_count(current_schedule):
 
 def main(major_link, student_schedule):
     """ Create two Schedules based on a URL to a UMD course offerings page
-        and a CSV file of the student's partially complete schedule. Compare
-        the two schedules to determine which classes from the major_link schedule
-        fit into student_schedule based on times.
+        and a CSV file of the student's partially complete schedule.
+
+        Compare the two schedules to determine which classes from the
+        major_link schedule fit into student_schedule based on times.
 
     Args:
         major_link (string): a link to the major's Schedule of Classes.
