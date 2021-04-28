@@ -5,7 +5,7 @@ class Schedule:
     """ A schedule containing information on associated Courses.
 
         The student will input a file containing Course information,
-        which will beused to create a new Schedule instance that
+        which will be used to create a new Schedule instance that
         represents the schedule that they have already built.
         Another Schedule instance will be created based off of
         information found in the URL that was input in main(),
@@ -16,7 +16,7 @@ class Schedule:
 
     """
 
-    def __init__(self, file):
+    def __init__(self, user_input):
         """ Creates a new instance of the Schedule class.
 
         Args:
@@ -27,6 +27,18 @@ class Schedule:
 
         """
 
+        self.courses = []
+
+        if user_input.find(".csv") > -1:
+            with open(user_input, "r", encoding="utf-8") as f:
+                for line in f:
+                    new_course = Course(line)
+                    self.courses.append(new_course)
+        else:
+
+        # Waiting on web scraping to be done before implementing Schedule for the URL
+
+
     def print_schedule(self):
         """ Prints the current state of the Schedule instance.
 
@@ -34,6 +46,8 @@ class Schedule:
             print: This method prints to the console.
 
         """
+        for course in self.courses:
+            print(course)
 
 
 class Course:
@@ -45,23 +59,25 @@ class Course:
         name (string): A string containing the course name.
         section_number (int): the section number associated with that
             specific course.
-        available_seats (int): the number of open slots for the course.
         credits (int): the number of credits associated with the course.
         days (list of Days): A list containing Day objects associated
             with the course.
 
     """
 
-    def __init__(self, file):
+    def __init__(self, course_info):
         """ Creates a new instance of a Course.
 
         Args:
-            file (string): The path to a CSV file containing the user's
-                partially completed course schedule. This includes each
-                course's code (ex. PSYC355), name, section number,
-                available seats, credits, and meeting days.
+            course_info (string): One line pulled from the CSV file or URL input in the Schedule class.
 
         """
+
+        # Build a regex that will match items from a single line of the CSV file (EXCEPT for the days)
+        ## Use the example_schedule.txt file to help build the regex
+        ## Set each attribute to a different matching group of the regex
+
+        # Need to wait for web scraping to be done to implement the Course class for the URL
 
 
 class Day:
@@ -77,16 +93,19 @@ class Day:
 
     """
 
-    def __init__(self, file):
+    def __init__(self, day_info):
         """ Creates a new instance of the Day class.
 
        Args:
-           file (string): The path to a CSV file containing the user's
-                partially completed course schedule. This includes each
-                course's code (ex. PSYC355), name, section number,
-                available seats, credits, and meeting days.
+           day_info (string): A string containing information such as the name of the day, as well as course start
+                and end times for that day.
 
        """
+
+        # Build a regex that matches the days and start/end times
+        ## Use the same file as the Course class does for an example
+
+        # Need to wait for web scraping to be done to implement the Day class for the URL
 
 
 def add_class(class_wanted):
@@ -99,6 +118,8 @@ def add_class(class_wanted):
         this function edits the attributes of the student's schedule.
 
     """
+
+
 
 
 def remove_class(class_unwanted):
@@ -146,6 +167,12 @@ def main(major_link, student_schedule):
         See add_class() and remove_class().
 
     """
+
+    student_classes = Schedule(student_schedule)
+    major_classes = Schedule(major_link)
+
+    student_classes.print_schedule()
+    major_classes.print_schedule()
 
 
 if __name__ == "__main__":
