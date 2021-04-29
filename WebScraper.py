@@ -15,6 +15,7 @@ def getHTML(url):
     rowList = str(html).split("\\n")
     return rowList
 
+
 def classNames(rowList):
     names=[]
     for line in rowList:
@@ -25,11 +26,13 @@ def classNames(rowList):
             names.append(class_name)
     return names
 
+
 def getClassURL(url,class_name):
     newURL=str(url)+"/"+str(class_name)
     html = urllib.request.urlopen(newURL, context=ctx).read()
     cpage_lines = str(html).split("\\n")
     return cpage_lines
+
 
 def classInfo(course_codes):
     """Pulls the official names, section numbers, days of the week,
@@ -38,7 +41,8 @@ def classInfo(course_codes):
     code with course names, and one pairing course code with the rest of the
     above listed data. 
     
-    classDict Outline -> course_code:[[section number, day, start time, end-time],...]
+    classDict Outline -> course_code:[[course name, section number, day,
+        start time, end-time],...]
     Note: Each course code has lists for each section number. Some section numbers
     may appear in two consecutive lists, indicating that the section meets twice
     in the same day.
@@ -47,8 +51,6 @@ def classInfo(course_codes):
     course_codes (list): list of course codes
     """
     classDict={}
-    nameDict={}
-    i=0
     for name in course_codes:
         tList=[]
         cpage_lines=getClassURL(myURL,name)
@@ -57,30 +59,28 @@ def classInfo(course_codes):
                 tStart=line.find(">")+1
                 tEnd=line.find("</span>")
                 course_title=line[tStart:tEnd]
-                nameDict[name]=course_title
+
+            if "course-min-credits" in line:
+                credStart=line.find(">")+1
+                credEnd=line.find("</span>")
+                credits = line[credStart:credEnd]
             
             if 'name="sectionId" value' in line:
                 id_start=line.find("value=")+7
                 id_end=line.find("/>")-2
                 class_id=line[id_start:id_end]
-                #print(class_id)
                 
             if 'open-seats-count' in line: #890
                 cstart=line.find(">")+1
                 cend=line.find("</")
                 seat_count=line[cstart:cend]
-                    
-            if "elms-class-message" in line: #964
-                day="Class time/details on ELMS"
-                time="Class time/details on ELMS"
-                logistics=[class_id,day,time]
-                if int(seat_count) > 0:
-                    tList.append(logistics)
-            elif "section-days" in line:
+
+            if "section-days" in line:
                 dstart=line.find(">")+1
                 dend=line.find("</")
                 day=line[dstart:dend]
-            elif "class-start-time" in line:
+
+            if "class-start-time" in line:
                 time_start=line.find(">")+1
                 time_end=line.find("</")
                 time=line[time_start:time_end]
@@ -88,21 +88,23 @@ def classInfo(course_codes):
                 leave_start=line.find('end-time">')+10
                 leave_end=line.find("</",100)
                 end_time=line[leave_start:leave_end]
-                logistics=[class_id,day,time,end_time]
+                logistics=[name,course_title,class_id,credits,day,time,end_time]
+
                 if int(seat_count) > 0:
-                    tList.append(logistics)         
-                
-                
+                    tList.append(logistics)
+
+            if "elms-class-message" in line: #964
+                day="Class time/details on ELMS"
+                time="Class time/details on ELMS"
+                end_time="Class time/details on ELMS"
+                logistics=[name,course_title,class_id,credits,day,time,end_time]
+                if int(seat_count) > 0:
+                    tList.append(logistics)
         classDict[name]=tList
-        i=i+1
-        if i==6:
-            break
-    for p in classDict:
-        print(p)
-        print(classDict[p])
-    #print(nameDict)
-            
+
+    return classDict
+
+
 rowList=getHTML(myURL)
 course_codes=classNames(rowList)
-#print(course_codes)
 classInfo(course_codes)
