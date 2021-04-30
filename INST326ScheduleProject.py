@@ -75,7 +75,7 @@ class Schedule:
             this function edits the attributes of the student's schedule.
 
         """
-
+         
     def credit_count(self):
         """ Counts the total number of credits in the student's current schedule.
 
@@ -86,6 +86,9 @@ class Schedule:
             credits (int): the total number of credits in the student's schedule.
 
         """
+        credits = 0
+        for class in self.courses:
+            credits += class[3]
 
 
 class Course:
