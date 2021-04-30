@@ -53,6 +53,20 @@ class Schedule:
         for course in self.courses:
             print(course)
 
+   
+    def add_class(self, schedule, class_wanted):
+        """ Adds a class to the student's schedule.
+
+        Args:
+            class_wanted (Class): the class that the user wants to add.
+
+        Side Effects:
+            this function edits the attributes of the student's schedule.
+
+        """
+        self.courses.append(schedule.courses[class_wanted]) 
+
+
 
 class Course:
     """ Course information gathered from the CSV file input in main(), as well
@@ -148,16 +162,6 @@ class Day:
         return f"{self.name}, {self.start}, {self.end}"
 
 
-def add_class(class_wanted):
-    """ Adds a class to the student's schedule.
-
-    Args:
-        class_wanted (Class): the class that the user wants to add.
-
-    Side Effects:
-        this function edits the attributes of the student's schedule.
-
-    """
 
 
 def remove_class(class_unwanted):
@@ -212,7 +216,8 @@ def main(major_link, student_schedule):
 
     stud_schedule = Schedule(student_schedule)
     stud_schedule.print_schedule()
-
+    stud_schedule.add_class(class_schedule, 0)
+    stud_schedule.print_schedule()
 
 main("https://app.testudo.umd.edu/soc/202108/INST", "example_schedule.csv")
 
