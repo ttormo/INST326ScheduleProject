@@ -1,5 +1,6 @@
 """ A simple scheduling program to assist UMD students. """
 
+import re
 from WebScraper import getHTML,classNames, getClassURL, classInfo
 
 class Schedule:
@@ -27,7 +28,6 @@ class Schedule:
                 available seats, credits, and meeting days.
 
         """
-
         self.courses = []
         if user_input.find(".csv") > -1:
             with open(user_input, "r", encoding="utf-8") as f:
@@ -77,21 +77,41 @@ class Course:
 
         """
 
-        # Build a regex that will match items from a single line of the CSV file (EXCEPT for the days)
-        # Use the example_schedule.txt file to help build the regex
-        # Set each attribute to a different matching group of the regex
-        if isinstance(course_info, list):
+        if isinstance(course_info, str):
+            info = course_info.split(",")
+            self.code = info[0]
+            self.name = info[1]
+            self.section_number = info[2]
+            self.credits = info[3]
+            self.days = []
+
+            if info[4].find("Class") > -1:
+                day_info = [info[4], info[4], info[4]]
+                new_day = Day(day_info)
+                self.days.append(new_day)
+
+            else:
+                regex = r"""(?xm)
+                            (?P<day>(M|Tu|W|Th|F){1,4})
+                            (?:\s)
+                            (?P<start>\d{1,2}\:\d{2}[a-z]{2})
+                            (?:\s\-\s)
+                            (?P<end>\d{1,2}\:\d{2}[a-z]{2})"""
+                match = re.search(regex, info[4])
+                day_info = [match.group("day"), match.group("start"), match.group("end")]
+                new_day = Day(day_info)
+                self.days.append(new_day)
+
+        elif isinstance(course_info, list):
             self.code = course_info[0]
             self.name = course_info[1]
             self.section_number = course_info[2]
             self.credits = course_info[3]
             self.days = []
 
-            new_day = Day(course_info[4],course_info[5], course_info[6])
+            day_info = [course_info[4],course_info[5], course_info[6]]
+            new_day = Day(day_info)
             self.days.append(new_day)
-
-        else:
-            print("you suck")
 
     def __repr__(self):
         return f"{self.code}, {self.name}, {self.section_number}, {self.credits}, {self.days}"
@@ -110,20 +130,19 @@ class Day:
 
     """
 
-    def __init__(self, name, start, end):
+    def __init__(self, day_info):
         """ Creates a new instance of the Day class.
 
         Args:
-           day_info (string): A string containing information such as the name of the day, as well as course start
-                and end times for that day.
+           day_info (list of Strings): A string containing information such as the name of the day, as well as
+                course start and end times for that day.
 
         """
 
         # Create a regex that finds the day name, start, and end times within the CSV file
-
-        self.name = name
-        self.start = start
-        self.end = end
+        self.name = day_info[0]
+        self.start = day_info[1]
+        self.end = day_info[2]
 
     def __repr__(self):
         return f"{self.name}, {self.start}, {self.end}"
@@ -165,7 +184,7 @@ def credit_count(current_schedule):
     """
 
 
-def main(major_link):
+def main(major_link, student_schedule):
     """ Create two Schedules based on a URL to a UMD course offerings page
         and a CSV file of the student's partially complete schedule.
 
@@ -189,5 +208,11 @@ def main(major_link):
     class_schedule = Schedule(major_link)
     class_schedule.print_schedule()
 
-main("https://app.testudo.umd.edu/soc/202108/INST")
+    print("\n")
+
+    stud_schedule = Schedule(student_schedule)
+    stud_schedule.print_schedule()
+
+
+main("https://app.testudo.umd.edu/soc/202108/INST", "example_schedule.csv")
 
