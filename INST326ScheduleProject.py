@@ -53,7 +53,6 @@ class Schedule:
         for course in self.courses:
             print(course)
 
-   
     def add_class(self, schedule, class_wanted):
         """ Adds a class to the student's schedule.
 
@@ -64,8 +63,29 @@ class Schedule:
             this function edits the attributes of the student's schedule.
 
         """
-        self.courses.append(schedule.courses[class_wanted]) 
+        self.courses.append(schedule.courses[class_wanted])
 
+    def remove_class(self, class_unwanted):
+        """ Removes a class from the student's schedule.
+
+        Args:
+            class_unwanted (Class): the class that the user wants to remove.
+
+        Side Effects:
+            this function edits the attributes of the student's schedule.
+
+        """
+
+    def credit_count(self):
+        """ Counts the total number of credits in the student's current schedule.
+
+        Args:
+            current_schedule (Schedule): the student's current schedule.
+
+        Returns:
+            credits (int): the total number of credits in the student's schedule.
+
+        """
 
 
 class Course:
@@ -160,32 +180,6 @@ class Day:
 
     def __repr__(self):
         return f"{self.name}, {self.start}, {self.end}"
-
-
-
-
-def remove_class(class_unwanted):
-    """ Removes a class from the student's schedule.
-
-    Args:
-        class_unwanted (Class): the class that the user wants to remove.
-
-    Side Effects:
-        this function edits the attributes of the student's schedule.
-
-    """
-
-
-def credit_count(current_schedule):
-    """ Counts the total number of credits in the student's current schedule.
-
-    Args:
-        current_schedule (Schedule): the student's current schedule.
-
-    Returns:
-        credits (int): the total number of credits in the student's schedule.
-
-    """
 
 
 def main(major_link, student_schedule):
