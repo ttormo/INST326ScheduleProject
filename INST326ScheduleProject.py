@@ -3,6 +3,7 @@
 import re
 from WebScraper import getHTML,classNames, getClassURL, classInfo
 
+
 class Schedule:
     """ A schedule containing information on associated Courses.
 
@@ -14,7 +15,8 @@ class Schedule:
         representing the list of courses for a given UMD major.
 
     Attributes:
-        courses (list of Course objects): the classes in the student's schedule.
+        courses (list of Course objects): the classes in the student's
+            schedule.
 
     """
 
@@ -22,10 +24,10 @@ class Schedule:
         """ Creates a new instance of the Schedule class.
 
         Args:
-            file (string): The path to a CSV file containing the user's
-                partially completed course schedule. This includes each
-                course's code (ex. PSYC355), name, section number,
-                available seats, credits, and meeting days.
+            user_input (string): The path to a CSV file containing the user's
+                partially completed course schedule, OR a URL pointing to a
+                testudo.umd.edu website containing information on a Major's
+                courses.
 
         """
         self.courses = []
@@ -53,42 +55,33 @@ class Schedule:
         for course in self.courses:
             print(course)
 
-    def add_class(self, schedule, class_wanted):
-        """ Adds a class to the student's schedule.
+    def add_class(self, major_schedule, class_wanted):
+        """ Adds a class from major_schedule into the Schedule this is run
+                on (self).
 
         Args:
-            class_wanted (Class): the class that the user wants to add.
+            class_wanted (int): the index of the class from major_schedule that the user
+                would like to add to their schedule.
+            major_schedule (Schedule): the schedule to pull classes from.
 
         Side Effects:
             this function edits the attributes of the student's schedule.
 
         """
-        self.courses.append(schedule.courses[class_wanted])
+        self.courses.append(major_schedule.courses[class_wanted])
 
     def remove_class(self, class_unwanted):
-        """ Removes a class from the student's schedule.
+        """ Adds a class from the schedule this is run on (self).
 
         Args:
-            class_unwanted (Class): the class that the user wants to remove.
+            class_unwanted (int): the index of the class that the user wishes
+                to remove from their schedule.
 
         Side Effects:
             this function edits the attributes of the student's schedule.
 
         """
-         
-    def credit_count(self):
-        """ Counts the total number of credits in the student's current schedule.
-
-        Args:
-            current_schedule (Schedule): the student's current schedule.
-
-        Returns:
-            credits (int): the total number of credits in the student's schedule.
-
-        """
-        credits = 0
-        for class in self.courses:
-            credits += class[3]
+        self.courses.remove(self.courses[class_unwanted])
 
 
 class Course:
@@ -110,7 +103,8 @@ class Course:
         """ Creates a new instance of a Course.
 
         Args:
-            course_info (string): One line pulled from the CSV file or URL input in the Schedule class.
+            course_info (string): One line pulled from the CSV file or URL
+                input in the Schedule class.
 
         """
 
@@ -175,8 +169,6 @@ class Day:
                 course start and end times for that day.
 
         """
-
-        # Create a regex that finds the day name, start, and end times within the CSV file
         self.name = day_info[0]
         self.start = day_info[1]
         self.end = day_info[2]
@@ -185,12 +177,29 @@ class Day:
         return f"{self.name}, {self.start}, {self.end}"
 
 
+def credit_count(current_schedule):
+    """ Counts the total number of credits in the specified schedule and prints it to stdout.
+
+    Args:
+        current_schedule (Schedule): the student's current schedule.
+
+    Side effects:
+        This function prints to stdout.
+
+    """
+    total = 0
+    for course in current_schedule.courses:
+        total += int(course.credits)
+    print(total)
+
+
 def main(major_link, student_schedule):
     """ Create two Schedules based on a URL to a UMD course offerings page
-        and a CSV file of the student's partially complete schedule.
+            and a CSV file of the student's partially complete schedule.
 
-        Compare the two schedules to determine which classes from the
-        major_link schedule fit into student_schedule based on times.
+        Print and manipulate the two Schedules. Courses can be added and removed
+            from each schedule. The number of credits in a Schedule can also be
+            counted.
 
     Args:
         major_link (string): a link to the major's Schedule of Classes.
@@ -206,15 +215,42 @@ def main(major_link, student_schedule):
         See add_class() and remove_class().
 
     """
+    # Creating schedule of classes for the Major (URL)
     class_schedule = Schedule(major_link)
+    # Printing the schedule of classes for the Major
     class_schedule.print_schedule()
 
+    # Newline for readability
     print("\n")
 
+    # Creating schedule of classes for the student (CSV file).
     stud_schedule = Schedule(student_schedule)
-    stud_schedule.print_schedule()
-    stud_schedule.add_class(class_schedule, 0)
+    # Printing the schedule of classes for the Student.
     stud_schedule.print_schedule()
 
+    # Newline for readability
+    print("\n")
+
+    # Adding a class from the Major's schedule of classes to the
+    #   student's schedule.
+    stud_schedule.add_class(class_schedule, 0)
+    # Printing the student's new schedule.
+    stud_schedule.print_schedule()
+
+    # Newline for readability
+    print("\n")
+
+    # Removing a class from the student's schedule.
+    stud_schedule.remove_class(0)
+    # Printing the student's new schedule.
+    stud_schedule.print_schedule()
+
+    # Newline for readability
+    print("\n")
+
+    # Counting the credits in the student's schedule.
+    credit_count(stud_schedule)
+
+# Hardcoded for now
 main("https://app.testudo.umd.edu/soc/202108/INST", "example_schedule.csv")
 
