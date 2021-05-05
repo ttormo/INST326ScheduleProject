@@ -1,7 +1,7 @@
 """ A simple scheduling program to assist UMD students. """
 
 import re
-from WebScraper import getHTML,classNames, getClassURL, classInfo
+from WebScraper import getHTML, classNames, getClassURL, classInfo
 
 
 class Schedule:
@@ -40,10 +40,18 @@ class Schedule:
             html_list = getHTML(user_input)
             codes = classNames(html_list)
             courses = classInfo(codes)
+
+            code_and_sec = []
             for key in courses:
                 for i in courses[key]:
                     new_course = Course(i)
-                    self.courses.append(new_course)
+                    if new_course.code and new_course.section_number not in code_and_sec:
+                        code_and_sec.append(new_course.code)
+                        code_and_sec.append(new_course.section_number)
+                        self.courses.append(new_course)
+                    else:
+
+                        self.courses[].days.append(new_course.days)
 
     def print_schedule(self):
         """ Prints the current state of the Schedule instance.
@@ -146,6 +154,19 @@ class Course:
 
     def __repr__(self):
         return f"{self.code}, {self.name}, {self.section_number}, {self.credits}, {self.days}"
+
+    def add_day(self, day):
+        regex = r"""(?xm)
+                    (?P<day>(M|Tu|W|Th|F){1,4})
+                    (?:\s)
+                    (?P<start>\d{1,2}\:\d{2}[a-z]{2})
+                    (?:\s\-\s)
+                    (?P<end>\d{1,2}\:\d{2}[a-z]{2})"""
+        match = re.search(regex, day)
+        day_info = [match.group("day"), match.group("start"), match.group("end")]
+        new_day = Day(day_info)
+        self.days.append(new_day)
+
 
 
 class Day:
