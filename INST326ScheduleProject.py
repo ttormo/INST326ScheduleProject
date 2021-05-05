@@ -41,8 +41,8 @@ class Schedule:
             codes = classNames(html_list)
             courses = classInfo(codes)
 
-            code_and_sec = []
             for key in courses:
+                code_and_sec = []
                 for i in courses[key]:
                     new_course = Course(i)
                     if new_course.code and new_course.section_number not in code_and_sec:
@@ -50,8 +50,7 @@ class Schedule:
                         code_and_sec.append(new_course.section_number)
                         self.courses.append(new_course)
                     else:
-
-                        self.courses[].days.append(new_course.days)
+                        self.courses[-1].days.append(new_course.days)
 
     def print_schedule(self):
         """ Prints the current state of the Schedule instance.
@@ -166,7 +165,6 @@ class Course:
         day_info = [match.group("day"), match.group("start"), match.group("end")]
         new_day = Day(day_info)
         self.days.append(new_day)
-
 
 
 class Day:
