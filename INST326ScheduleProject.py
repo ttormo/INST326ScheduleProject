@@ -81,9 +81,15 @@ class Schedule:
             this function edits the attributes of the student's schedule.
 
         """
+        x=0
         for course in major_schedule.courses:
             if course_code == course.code and course_section == course.section_number:
                 self.courses.append(course)
+                x=1
+        if x ==0:
+            print("The course code or section number you entered is not valid")
+        else:
+            print("Course successfully added")
 
     def remove_class(self, course_code, course_section):
         """ Adds a class from the schedule this is run on (self).
@@ -96,9 +102,16 @@ class Schedule:
             this function edits the attributes of the student's schedule.
 
         """
+                
+        x=0
         for course in self.courses:
             if course_code == course.code and course_section == course.section_number:
                 self.courses.remove(course)
+                x=1
+        if x ==0:
+            print("The course code or section number you entered is not valid")
+        else:
+            print("Course successfully removed")
 
 
 class Course:
@@ -219,7 +232,7 @@ def credit_count(current_schedule):
     total = 0
     for course in current_schedule.courses:
         total += int(course.credits)
-    print(total)
+    print(f"Your schedule currently contains {total} credits")
 
 
 def main(major_link, student_schedule):
@@ -256,9 +269,27 @@ def main(major_link, student_schedule):
     stud_schedule = Schedule(student_schedule)
     # Printing the schedule of classes for the Student.
     stud_schedule.print_schedule()
-
-
-
+    
+    addC = "null"
+    while addC != "stop":
+        addC = input("Please enter the class code of the course you would like to add, or type stop ")
+        if addC == "stop":
+            break
+        addS = input(f"Please enter the desired section number for {addC} ")
+        userChoice=input("Would you like to add or remove the specified course? (type add or remove) ")
+        if userChoice == "add" or userChoice == "Add":
+            stud_schedule.add_class(class_schedule, addC, addS)
+        elif userChoice == "remove" or userChoice == "Remove":
+            stud_schedule.remove_class(addC, addS)
+        else:
+            continue
+        printQ=input("Would you like to view your schedule? (yes or no) ")
+        if printQ == "yes" or printQ == "Yes":
+            stud_schedule.print_schedule()
+            credit_count(stud_schedule)
+        elif printQ == "no" or printQ == "No":
+            continue
+        
 
 
     # Newline for readability
@@ -266,23 +297,23 @@ def main(major_link, student_schedule):
 
     # Adding a class from the Major's schedule of classes to the
     #   student's schedule.
-    stud_schedule.add_class(class_schedule, "INST123", "0102")
+    #stud_schedule.add_class(class_schedule, "INST123", "0102")
     # Printing the student's new schedule.
-    stud_schedule.print_schedule()
+    #stud_schedule.print_schedule()
 
     # Newline for readability
-    print("\n")
+    #print("\n")
 
     # Removing a class from the student's schedule.
-    stud_schedule.remove_class("INST123", "0102")
+    #stud_schedule.remove_class("INST123", "0102")
     # Printing the student's new schedule.
-    stud_schedule.print_schedule()
+    #stud_schedule.print_schedule()
 
     # Newline for readability
-    print("\n")
+    #print("\n")
 
     # Counting the credits in the student's schedule.
-    credit_count(stud_schedule)
+    #credit_count(stud_schedule)
 
 
 def parse_args(arglist):
