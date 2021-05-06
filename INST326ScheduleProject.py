@@ -1,7 +1,9 @@
 """ A simple scheduling program to assist UMD students. """
 
 import re
+import sys
 from WebScraper import getHTML, classNames, getClassURL, classInfo
+from argparse import ArgumentParser
 
 
 class Schedule:
@@ -29,18 +31,20 @@ class Schedule:
                 testudo.umd.edu website containing information on a Major's
                 courses.
 
+        Raises:
+            ValueError: The user input an unsupported file type or invalid URL.
+
         """
         self.courses = []
-        if user_input.find(".csv") > -1:
+        if user_input.find(".csv") != -1:
             with open(user_input, "r", encoding="utf-8") as f:
                 for line in f:
                     new_course = Course(line)
                     self.courses.append(new_course)
-        else:
+        elif user_input.find("https://app.testudo.umd.edu/soc/") != -1:
             html_list = getHTML(user_input)
             codes = classNames(html_list)
             courses = classInfo(codes)
-
             for key in courses:
                 code_and_sec = []
                 for i in courses[key]:
@@ -51,6 +55,8 @@ class Schedule:
                         self.courses.append(new_course)
                     else:
                         self.courses[-1].days.append(new_course.days)
+        else:
+            raise ValueError("An invalid URL/Filetype was input.")
 
     def print_schedule(self):
         """ Prints the current state of the Schedule instance.
@@ -62,7 +68,7 @@ class Schedule:
         for course in self.courses:
             print(course)
 
-    def add_class(self, major_schedule, class_wanted):
+    def add_class(self, major_schedule, course_code, course_section):
         """ Adds a class from major_schedule into the Schedule this is run
                 on (self).
 
@@ -75,9 +81,11 @@ class Schedule:
             this function edits the attributes of the student's schedule.
 
         """
-        self.courses.append(major_schedule.courses[class_wanted])
+        for course in major_schedule.courses:
+            if course_code == course.code and course_section == course.section_number:
+                self.courses.append(course)
 
-    def remove_class(self, class_unwanted):
+    def remove_class(self, course_code, course_section):
         """ Adds a class from the schedule this is run on (self).
 
         Args:
@@ -88,7 +96,9 @@ class Schedule:
             this function edits the attributes of the student's schedule.
 
         """
-        self.courses.remove(self.courses[class_unwanted])
+        for course in self.courses:
+            if course_code == course.code and course_section == course.section_number:
+                self.courses.remove(course)
 
 
 class Course:
@@ -247,12 +257,16 @@ def main(major_link, student_schedule):
     # Printing the schedule of classes for the Student.
     stud_schedule.print_schedule()
 
+
+
+
+
     # Newline for readability
     print("\n")
 
     # Adding a class from the Major's schedule of classes to the
     #   student's schedule.
-    stud_schedule.add_class(class_schedule, 0)
+    stud_schedule.add_class(class_schedule, "INST123", "0102")
     # Printing the student's new schedule.
     stud_schedule.print_schedule()
 
@@ -260,7 +274,7 @@ def main(major_link, student_schedule):
     print("\n")
 
     # Removing a class from the student's schedule.
-    stud_schedule.remove_class(0)
+    stud_schedule.remove_class("INST123", "0102")
     # Printing the student's new schedule.
     stud_schedule.print_schedule()
 
@@ -270,6 +284,24 @@ def main(major_link, student_schedule):
     # Counting the credits in the student's schedule.
     credit_count(stud_schedule)
 
+
+def parse_args(arglist):
+    parser = ArgumentParser()
+    parser.add_argument("major_link", help="standard URL that points to"
+                                           "a testudo schedule of classes"
+                                           "page for a specific major")
+    parser.add_argument("student_schedule", help="path to a CSV file"
+                                                 "containing information on"
+                                                 "a student's current"
+                                                 "schedule")
+    return parser.parse_args(arglist)
+
+
+if __name__ == "__main__":
+    args = parse_args(sys.argv[1:])
+    main(args.major_link, args.student_schedule)
+
+
 # Hardcoded for now
-main("https://app.testudo.umd.edu/soc/202108/INST", "example_schedule.csv")
+# main("https://app.testudo.umd.edu/soc/202108/INST", "example_schedule.csv")
 
