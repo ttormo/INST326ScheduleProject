@@ -49,7 +49,8 @@ class Schedule:
                 code_and_sec = []
                 for i in courses[key]:
                     new_course = Course(i)
-                    if new_course.code and new_course.section_number not in code_and_sec:
+                    if new_course.code and new_course.section_number \
+                            not in code_and_sec:
                         code_and_sec.append(new_course.code)
                         code_and_sec.append(new_course.section_number)
                         self.courses.append(new_course)
@@ -83,7 +84,8 @@ class Schedule:
         """
         x = 0
         for course in major_schedule.courses:
-            if course_code == course.code and course_section == course.section_number:
+            if course_code == course.code \
+                    and course_section == course.section_number:
                 self.courses.append(course)
                 x = 1
         if x == 0:
@@ -107,7 +109,8 @@ class Schedule:
                 
         x = 0
         for course in self.courses:
-            if course_code == course.code and course_section == course.section_number:
+            if course_code == course.code \
+                    and course_section == course.section_number:
                 self.courses.remove(course)
                 x = 1
         if x == 0:
@@ -116,6 +119,11 @@ class Schedule:
         else:
             print("\n")
             print("Course successfully removed")
+
+    def add_to_file(self, user_input):
+        with open(user_input, "w", encoding="utf-8") as f:
+            for course in self.courses:
+                print(course, file=f)
 
 
 class Course:
@@ -163,7 +171,8 @@ class Course:
                             (?:\s\-\s)
                             (?P<end>\d{1,2}\:\d{2}[a-z]{2})"""
                 match = re.search(regex, info[4])
-                day_info = [match.group("day"), match.group("start"), match.group("end")]
+                day_info = [match.group("day"), match.group("start"),
+                            match.group("end")]
                 new_day = Day(day_info)
                 self.days.append(new_day)
 
@@ -179,7 +188,8 @@ class Course:
             self.days.append(new_day)
 
     def __repr__(self):
-        return f"{self.code}, {self.name}, {self.section_number}, {self.credits}, {self.days}"
+        return f"{self.code}, {self.name}, {self.section_number}, " \
+               f"{self.credits}, {self.days}"
 
     def add_day(self, day):
         regex = r"""(?xm)
@@ -189,7 +199,8 @@ class Course:
                     (?:\s\-\s)
                     (?P<end>\d{1,2}\:\d{2}[a-z]{2})"""
         match = re.search(regex, day)
-        day_info = [match.group("day"), match.group("start"), match.group("end")]
+        day_info = [match.group("day"), match.group("start"),
+                    match.group("end")]
         new_day = Day(day_info)
         self.days.append(new_day)
 
@@ -198,7 +209,8 @@ class Day:
     """ This class allows the day of the week, start time, and end time to be
     specified for the student's courses based on their provided file.
 
-    Each instance of the Course class will have at least one associated Day class.
+    Each instance of the Course class will have at least one associated Day
+        class.
 
     Attributes:
         name (string): a string containing the name of the day.
@@ -211,8 +223,9 @@ class Day:
         """ Creates a new instance of the Day class.
 
         Args:
-           day_info (list of Strings): A string containing information such as the name of the day, as well as
-                course start and end times for that day.
+           day_info (list of Strings): A string containing information such
+            as the name of the day, as well as course start and end times
+            for that day.
 
         """
         self.name = day_info[0]
@@ -224,7 +237,8 @@ class Day:
 
 
 def credit_count(current_schedule):
-    """ Counts the total number of credits in the specified schedule and prints it to stdout.
+    """ Counts the total number of credits in the specified schedule and
+            prints it to stdout.
 
     Args:
         current_schedule (Schedule): the student's current schedule.
@@ -243,16 +257,16 @@ def main(major_link, student_schedule):
     """ Create two Schedules based on a URL to a UMD course offerings page
             and a CSV file of the student's partially complete schedule.
 
-        Print and manipulate the two Schedules. Courses can be added and removed
-            from each schedule. The number of credits in a Schedule can also be
-            counted.
+        Print and manipulate the two Schedules. Courses can be added and
+            removed from each schedule. The number of credits in a
+            Schedule can also be counted.
 
     Args:
         major_link (string): a link to the major's Schedule of Classes.
         student_schedule (string): the filepath of the user's schedule. The
             schedule should contain information on the User's pre-chosen
-            classes, including course code, name, section_number, available seats,
-            credits, and meeting days.
+            classes, including course code, name, section_number, available
+            seats, credits, and meeting days.
 
     Returns:
         see credit_count().
@@ -279,12 +293,13 @@ def main(major_link, student_schedule):
     
     addC = "null"
     while addC != "stop":
-        addC = input("Please enter the class code of the course you would like to add, "
-                     "or type stop to end this program: ")
+        addC = input("Please enter the class code of the course you would like"
+                     " to add/remove, or type stop to end this program: ")
         if addC == "stop":
             break
         addS = input(f"Please enter the desired section number for {addC}: ")
-        userChoice=input("Would you like to add or remove the specified course? (type add or remove): ")
+        userChoice=input("Would you like to add or remove the specified "
+                         "course? (type add or remove): ")
         if userChoice == "add" or userChoice == "Add":
             stud_schedule.add_class(class_schedule, addC, addS)
         elif userChoice == "remove" or userChoice == "Remove":
@@ -297,29 +312,12 @@ def main(major_link, student_schedule):
             credit_count(stud_schedule)
         elif printQ == "no" or printQ == "No":
             continue
-
-    # Newline for readability
-    # print("\n")
-
-    # Adding a class from the Major's schedule of classes to the
-    #   student's schedule.
-    # stud_schedule.add_class(class_schedule, "INST123", "0102")
-    # Printing the student's new schedule.
-    # stud_schedule.print_schedule()
-
-    # Newline for readability
-    # print("\n")
-
-    # Removing a class from the student's schedule.
-    # stud_schedule.remove_class("INST123", "0102")
-    # Printing the student's new schedule.
-    # stud_schedule.print_schedule()
-
-    # Newline for readability
-    # print("\n")
-
-    # Counting the credits in the student's schedule.
-    # credit_count(stud_schedule)
+        editQ = input("Would you like to add these changes to your schedule "
+                      "file? (yes or no): ")
+        if editQ == "yes" or printQ == "Yes":
+            stud_schedule.add_to_file(student_schedule)
+        elif editQ == "no" or printQ == "No":
+            continue
 
 
 def parse_args(arglist):
@@ -339,6 +337,4 @@ if __name__ == "__main__":
     main(args.major_link, args.student_schedule)
 
 
-# Hardcoded for now
-# main("https://app.testudo.umd.edu/soc/202108/INST", "example_schedule.csv")
 
