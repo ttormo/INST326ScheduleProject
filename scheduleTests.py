@@ -25,13 +25,13 @@ def test_print_schedule(capsys):
     new_schedule.print_schedule()
     outerr = capsys.readouterr()
     out = outerr.out
-    assert out == "INST208L, Linux Command Line Tools, 0101, 3, [[Class Time and Details on ELMS \n" \
-                  "Class Time and Details on ELMS \n" \
+    assert out == "INST208L, Linux Command Line Tools, 0101, 3, [[Class Time and Details on ELMS\n" \
+                  "Class Time and Details on ELMS\n" \
                   "- Class Time and Details on ELMS\n" \
                   "]]\n" \
-                  "INST326, Object-Oriented Programming for Information Science, 0102, 3, [[MWF 9:00am - 9:50am]] \n" \
+                  "INST326, Object-Oriented Programming for Information Science, 0102, 3, [[MWF 9:00am - 9:50am]]\n" \
                   "ASTR101, General Astronomy, 0103, 4, [[TuTh 11:00am - 12:15pm], [W 11:00am - 1:00pm], " \
-                  "[W 10:00am - 10:50am] \n" \
+                  "[W 10:00am - 10:50am]\n" \
                   "]"
 
 
