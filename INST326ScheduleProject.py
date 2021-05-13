@@ -170,11 +170,14 @@ class Course:
                             (?P<start>\d{1,2}\:\d{2}[a-z]{2})
                             (?:\s\-\s)
                             (?P<end>\d{1,2}\:\d{2}[a-z]{2})"""
-                match = re.search(regex, info[4])
-                day_info = [match.group("day"), match.group("start"),
-                            match.group("end")]
-                new_day = Day(day_info)
-                self.days.append(new_day)
+
+                for i in range(len(info)):
+                    match = re.search(regex, info[i])
+                    if match:
+                        day_info = [match.group("day"), match.group("start"),
+                                    match.group("end")]
+                        new_day = Day(day_info)
+                        self.days.append(new_day)
 
         elif isinstance(course_info, list):
             self.code = course_info[0]
@@ -190,19 +193,6 @@ class Course:
     def __repr__(self):
         return f"{self.code}, {self.name}, {self.section_number}, " \
                f"{self.credits}, {self.days}"
-
-    def add_day(self, day):
-        regex = r"""(?xm)
-                    (?P<day>(M|Tu|W|Th|F){1,4})
-                    (?:\s)
-                    (?P<start>\d{1,2}\:\d{2}[a-z]{2})
-                    (?:\s\-\s)
-                    (?P<end>\d{1,2}\:\d{2}[a-z]{2})"""
-        match = re.search(regex, day)
-        day_info = [match.group("day"), match.group("start"),
-                    match.group("end")]
-        new_day = Day(day_info)
-        self.days.append(new_day)
 
 
 class Day:
@@ -233,7 +223,7 @@ class Day:
         self.end = day_info[2]
 
     def __repr__(self):
-        return f"{self.name}, {self.start}, {self.end}"
+        return f"[{self.name} {self.start} - {self.end}]"
 
 
 def credit_count(current_schedule):
