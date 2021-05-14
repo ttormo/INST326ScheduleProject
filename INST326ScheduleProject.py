@@ -77,9 +77,11 @@ class Schedule:
             class_wanted (int): the index of the class from major_schedule that the user
                 would like to add to their schedule.
             major_schedule (Schedule): the schedule to pull classes from.
+            course_code(str): the code identifying the course being added to student schedule.
+            course_section(int): the section number of the course being added to student schedule.
 
         Side Effects:
-            this function edits the attributes of the student's schedule.
+            This function edits the attributes of the student's schedule.
 
         """
         x = 0
@@ -101,9 +103,11 @@ class Schedule:
         Args:
             class_unwanted (int): the index of the class that the user wishes
                 to remove from their schedule.
+            course_code(str): the code identifying the course being added to student schedule.
+            course_section(int): the section number of the course being added to student schedule.
 
         Side Effects:
-            this function edits the attributes of the student's schedule.
+            Print: 
 
         """
                 
@@ -193,7 +197,7 @@ class Course:
     def __repr__(self):
         return f"{self.code}, {self.name}, {self.section_number}, " \
                f"{self.credits}, {self.days}"
-
+    """ Returns string as representation of course info containing course code, name, section number, number of credits and days of the week"""
 
 class Day:
     """ This class allows the day of the week, start time, and end time to be
@@ -224,7 +228,7 @@ class Day:
 
     def __repr__(self):
         return f"[{self.name} {self.start} - {self.end}]"
-
+    """ Returns string representation of day info and prints the name of days of the week, start time and end time of specified course."""
 
 def credit_count(current_schedule):
     """ Counts the total number of credits in the specified schedule and
@@ -234,7 +238,7 @@ def credit_count(current_schedule):
         current_schedule (Schedule): the student's current schedule.
 
     Side effects:
-        This function prints to stdout.
+        Print: A string stating the current number of credits of student's current schedule.
 
     """
     total = 0
