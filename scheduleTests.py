@@ -2,6 +2,11 @@ import pytest
 import INST326ScheduleProject
 
 
+@pytest.fixture
+def test_schedule():
+    return INST326ScheduleProject.Schedule("example_schedule.csv")
+
+
 def test_schedule_init_1():
     """Does the __init__() method of the Schedule class raise a Value Error
         when expected?
@@ -20,9 +25,8 @@ def test_schedule_init_2():
         new_schedule = INST326ScheduleProject.Schedule("https://google.com")
 
 
-def test_print_schedule(capsys):
-    new_schedule = INST326ScheduleProject.Schedule("example_schedule.csv")
-    new_schedule.print_schedule()
+def test_print_schedule(capsys, test_schedule):
+    test_schedule.print_schedule()
     outerr = capsys.readouterr()
     out = outerr.out
     assert out == "INST208L, Linux Command Line Tools, 0101, 3, [[Class Time and Details on ELMS\n" \
@@ -33,6 +37,7 @@ def test_print_schedule(capsys):
                   "ASTR101, General Astronomy, 0103, 4, [[TuTh 11:00am - 12:15pm], [W 11:00am - 1:00pm], " \
                   "[W 10:00am - 10:50am]\n" \
                   "]"
+
 
 
 
