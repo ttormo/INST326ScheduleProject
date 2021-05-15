@@ -39,5 +39,22 @@ def test_print_schedule(capsys, test_schedule):
                   "[W: 10:00am - 10:50am]]\n"
 
 
+def test_add_class():
+    return
+
+
+def test_remove_class():
+    return
+
+
+def test_add_to_file():
+    return
+
+
+def test_credit_count():
+    return
+
+
+
 
 
