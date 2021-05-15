@@ -95,8 +95,8 @@ def classInfo(course_codes):
 
             if "elms-class-message" in line: #964
                 day="Class time/details on ELMS"
-                time="Class time/details on ELMS"
-                end_time="Class time/details on ELMS"
+                time=""
+                end_time=""
                 logistics=[name,course_title,class_id,credits,day,time,end_time]
                 if int(seat_count) > 0:
                     tList.append(logistics)

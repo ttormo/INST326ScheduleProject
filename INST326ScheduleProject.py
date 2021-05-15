@@ -35,6 +35,7 @@ class Schedule:
             ValueError: The user input an unsupported file type or invalid URL.
 
         """
+
         self.courses = []
         if user_input.find(".csv") != -1:
             with open(user_input, "r", encoding="utf-8") as f:
@@ -66,6 +67,7 @@ class Schedule:
             print: This method prints to the console.
 
         """
+
         for course in self.courses:
             print(course)
 
@@ -84,6 +86,7 @@ class Schedule:
             This function edits the attributes of the student's schedule.
 
         """
+
         x = 0
         for course in major_schedule.courses:
             if course_code == course.code \
@@ -155,7 +158,8 @@ class Course:
         """
 
         if isinstance(course_info, str):
-            info = course_info.split(",")
+            stripped = course_info.strip("\n")
+            info = stripped.split(",")
             self.code = info[0]
             self.name = info[1]
             self.section_number = info[2]
@@ -163,7 +167,7 @@ class Course:
             self.days = []
 
             if info[4].find("Class") > -1:
-                day_info = [info[4], info[4], info[4]]
+                day_info = [info[4], "", ""]
                 new_day = Day(day_info)
                 self.days.append(new_day)
 
@@ -195,9 +199,13 @@ class Course:
             self.days.append(new_day)
 
     def __repr__(self):
+        """ Returns string as representation of course info containing course
+            code, name, section number, number of credits and days of
+            the week"""
+
         return f"{self.code}, {self.name}, {self.section_number}, " \
                f"{self.credits}, {self.days}"
-    """ Returns string as representation of course info containing course code, name, section number, number of credits and days of the week"""
+
 
 class Day:
     """ This class allows the day of the week, start time, and end time to be
@@ -227,8 +235,16 @@ class Day:
         self.end = day_info[2]
 
     def __repr__(self):
-        return f"[{self.name} {self.start} - {self.end}]"
-    """ Returns string representation of day info and prints the name of days of the week, start time and end time of specified course."""
+        """ Returns string representation of day info and prints the name
+            of days of the week, start time and end time of specified
+            course."""
+
+        if self.name == "Class time/details on ELMS" or \
+                self.name == "Class Time and Details on ELMS":
+            return f"[{self.name}]"
+        else:
+            return f"[{self.name}: {self.start} - {self.end}]"
+
 
 def credit_count(current_schedule):
     """ Counts the total number of credits in the specified schedule and
@@ -241,6 +257,7 @@ def credit_count(current_schedule):
         Print: A string stating the current number of credits of student's current schedule.
 
     """
+
     total = 0
     for course in current_schedule.courses:
         total += int(course.credits)
@@ -269,6 +286,7 @@ def main(major_link, student_schedule):
         See add_class() and remove_class().
 
     """
+
     # Creating schedule of classes for the Major (URL)
     class_schedule = Schedule(major_link)
     # Printing the schedule of classes for the Major
