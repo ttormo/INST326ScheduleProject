@@ -47,10 +47,6 @@ def test_remove_class():
     return
 
 
-def test_add_to_file():
-    return
-
-
 def test_credit_count():
     return
 

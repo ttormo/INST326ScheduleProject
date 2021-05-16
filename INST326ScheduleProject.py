@@ -76,14 +76,15 @@ class Schedule:
                 on (self).
 
         Args:
-            class_wanted (int): the index of the class from major_schedule that the user
-                would like to add to their schedule.
             major_schedule (Schedule): the schedule to pull classes from.
-            course_code(str): the code identifying the course being added to student schedule.
-            course_section(int): the section number of the course being added to student schedule.
+            course_code (str): the code identifying the course being added
+                to the schedule (self).
+            course_section (int): the section number of the course being
+                added to the schedule (self).
 
         Side Effects:
-            This function edits the attributes of the student's schedule.
+            This method edits the attributes of the student's schedule and
+                prints to stdout.
 
         """
 
@@ -95,7 +96,8 @@ class Schedule:
                 x = 1
         if x == 0:
             print("\n")
-            print("The course code or section number you entered is not valid.")
+            print("The course code or section number you entered is not "
+                  "valid.")
         else:
             print("\n")
             print("Course successfully added.")
@@ -104,13 +106,13 @@ class Schedule:
         """ Adds a class from the schedule this is run on (self).
 
         Args:
-            class_unwanted (int): the index of the class that the user wishes
-                to remove from their schedule.
-            course_code(str): the code identifying the course being added to student schedule.
-            course_section(int): the section number of the course being added to student schedule.
+            course_code (str): the code identifying the course being added to
+                the schedule (self).
+            course_section (int): the section number of the course being
+                added to the schedule (self).
 
         Side Effects:
-            Print: 
+            This method prints to stdout.
 
         """
                 
@@ -128,6 +130,16 @@ class Schedule:
             print("Course successfully removed")
 
     def add_to_file(self, user_input):
+        """ Writes the student's new schedule to their original CSV file.
+
+        Args:
+            user_input: A path to the CSV file containing the student's current
+                schedule information.
+
+        Side effects:
+            This method edits the file specified by user_input.
+
+        """
         with open(user_input, "w", encoding="utf-8") as f:
             for course in self.courses:
                 print(course, file=f)
@@ -254,7 +266,7 @@ def credit_count(current_schedule):
         current_schedule (Schedule): the student's current schedule.
 
     Side effects:
-        Print: A string stating the current number of credits of student's current schedule.
+        This function prints to stdout.
 
     """
 
@@ -279,11 +291,8 @@ def main(major_link, student_schedule):
             classes, including course code, name, section_number, available
             seats, credits, and meeting days.
 
-    Returns:
-        see credit_count().
-
     Side Effects:
-        See add_class() and remove_class().
+        See add_class(), remove_class(), and credit_count().
 
     """
 
