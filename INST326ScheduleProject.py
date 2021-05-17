@@ -45,7 +45,7 @@ class Schedule:
         elif user_input.find("https://app.testudo.umd.edu/soc/") != -1:
             html_list = getHTML(user_input)
             codes = classNames(html_list)
-            courses = classInfo(codes)
+            courses = classInfo(codes, user_input)
             for key in courses:
                 code_and_sec = []
                 for i in courses[key]:

@@ -4,7 +4,7 @@ import ssl
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
-myURL = "https://app.testudo.umd.edu/soc/202108/INST"
+#myURL = "https://app.testudo.umd.edu/soc/202108/INST"
 
 
 #____FUNCTIONS_____
@@ -34,7 +34,7 @@ def getClassURL(url,class_name):
     return cpage_lines
 
 
-def classInfo(course_codes):
+def classInfo(course_codes, user_input):
     """Pulls the official names, section numbers, days of the week,
     and start/end times for each course code, skipping over classes with
     no seats remaining. Two dictionaries are created: one pairing course
@@ -53,7 +53,7 @@ def classInfo(course_codes):
     classDict={}
     for name in course_codes:
         tList=[]
-        cpage_lines=getClassURL(myURL,name)
+        cpage_lines=getClassURL(user_input,name)
         for line in cpage_lines:
             if "course-title" in line:
                 tStart=line.find(">")+1
@@ -105,6 +105,6 @@ def classInfo(course_codes):
     return classDict
 
 
-rowList=getHTML(myURL)
-course_codes=classNames(rowList)
-classInfo(course_codes)
+#rowList=getHTML(myURL)
+#course_codes=classNames(rowList)
+#classInfo(course_codes)
