@@ -73,7 +73,7 @@ def classInfo(course_codes, user_input):
     course_codes (list): list of course codes
     user_input (string): the url to the full list of classes for a major
     
-    returns: 
+    Returns: 
     classDict (dict): dictionary of course code as key and course info as value.
     the course info layout is given in an example above
     """
