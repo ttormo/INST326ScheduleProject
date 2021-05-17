@@ -39,12 +39,24 @@ def test_print_schedule(capsys, test_schedule):
                   "[W: 10:00am - 10:50am]]\n"
 
 
-def test_add_class():
-    return
+def test_add_class(capsys):
+    "Does add_classs() print the correct statement? "
+    INST326ScheduleProject.add_class(0)
+    outerr = capsys.readouterr()
+    out = outerr.out
+    print(out)
+    assert out == "The course code or section number you entered is not valid"
 
 
-def test_remove_class():
-    return
+
+def test_remove_class(capsys):
+    "Does remove_class() print the correct statement?"
+    INST326ScheduleProject.remove_class
+    outter = capsys.readouterr(1)
+    out = outerr.out
+    print(out)
+    assert out == "Course successfully added."
+    
 
 
 def test_credit_count():
