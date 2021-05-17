@@ -71,7 +71,7 @@ def test_remove_class_1(capsys, output_schedule):
     """Does remove_class() print the correct statement if an invalid course is
         requested?"""
 
-    output_schedule.remove_class()
+    output_schedule.remove_class("not real", "not a class")
     outerr = capsys.readouterr()
     out = outerr.out
     print(out)
@@ -83,15 +83,21 @@ def test_remove_class_2(capsys, output_schedule):
     """Does remove_class() print the correct statement if a valid course is
         requested?"""
 
-    output_schedule.remove_class()
+    output_schedule.remove_class("INST208L", "0101")
     outerr = capsys.readouterr()
     out = outerr.out
     print(out)
-    assert out == "\n\nCourse successfully added.\n"
+    assert out == "\n\nCourse successfully removed.\n"
 
 
-def test_credit_count():
-    return
+def test_credit_count(capsys, output_schedule):
+    """Does credit_count print the correct amount of credits in the student's schedule after they add or removed classes?"""
+
+    INST326ScheduleProject.credit_count(output_schedule)
+    outerr = capsys.readouterr()
+    out = outerr.out
+    print(out)
+    assert out == "Your schedule currently contains 10 credits\n"
 
 
 
