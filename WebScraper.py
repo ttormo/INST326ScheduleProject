@@ -44,17 +44,18 @@ def classNames(rowList):
     return names
 
 
-def getClassURL(url,class_name):
-     """ Takes the given url and class name and creates a new url for that specific
-     class's info on testudo in order to pull specific class information
+def getClassURL(url, class_name):
+    """ Takes the given url and class name and creates a new url for that specific
+        class's info on testudo in order to pull specific class information
     
     Args:
-    url (string): A given testudo url to all classes offered for a certain major
-    class_name (string): the course id of a class from the names list
+        url (string): A given testudo url to all classes offered for a certain major
+        class_name (string): the course id of a class from the names list
     
     Returns:
-    cpage_lines (list): the lines of HTML from the newly created url
+        cpage_lines (list): the lines of HTML from the newly created url
     """
+
     newURL=str(url)+"/"+str(class_name)
     html = urllib.request.urlopen(newURL, context=ctx).read()
     cpage_lines = str(html).split("\\n")
