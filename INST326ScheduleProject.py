@@ -124,10 +124,10 @@ class Schedule:
                 x = 1
         if x == 0:
             print("\n")
-            print("The course code or section number you entered is not valid")
+            print("The course code or section number you entered is not valid.")
         else:
             print("\n")
-            print("Course successfully removed")
+            print("Course successfully removed.")
 
     def add_to_file(self, user_input):
         """ Writes the student's new schedule to their original CSV file.

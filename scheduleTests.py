@@ -7,6 +7,11 @@ def test_schedule():
     return INST326ScheduleProject.Schedule("example_schedule.csv")
 
 
+@pytest.fixture
+def output_schedule():
+    return INST326ScheduleProject.Schedule("schedule_for_tests.csv")
+
+
 def test_schedule_init_1():
     """Does the __init__() method of the Schedule class raise a Value Error
         when expected?
@@ -39,24 +44,50 @@ def test_print_schedule(capsys, test_schedule):
                   "[W: 10:00am - 10:50am]]\n"
 
 
-def test_add_class(capsys):
-    "Does add_classs() print the correct statement? "
-    INST326ScheduleProject.add_class(0)
+def test_add_class_1(capsys, output_schedule, test_schedule):
+    """Does add_class() print the correct statement when an invalid course
+        is requested?"""
+
+    output_schedule.add_class(test_schedule, "not real", "not a class")
     outerr = capsys.readouterr()
     out = outerr.out
     print(out)
-    assert out == "The course code or section number you entered is not valid"
+    assert out == "\n\nThe course code or section number you entered is not " \
+                  "valid.\n"
 
 
+def test_add_class_2(capsys, output_schedule, test_schedule):
+    """Does add_class() print the correct statement when a valid course
+        is requested?"""
 
-def test_remove_class(capsys):
-    "Does remove_class() print the correct statement?"
-    INST326ScheduleProject.remove_class
-    outter = capsys.readouterr(1)
+    output_schedule.add_class(test_schedule, "INST208L", "0101")
+    outerr = capsys.readouterr()
     out = outerr.out
     print(out)
-    assert out == "Course successfully added."
-    
+    assert out == "\n\nCourse successfully added.\n"
+
+
+def test_remove_class_1(capsys, output_schedule):
+    """Does remove_class() print the correct statement if an invalid course is
+        requested?"""
+
+    output_schedule.remove_class()
+    outerr = capsys.readouterr()
+    out = outerr.out
+    print(out)
+    assert out == "\n\nThe course code or section number you entered is not " \
+                  "valid.\n"
+
+
+def test_remove_class_2(capsys, output_schedule):
+    """Does remove_class() print the correct statement if a valid course is
+        requested?"""
+
+    output_schedule.remove_class()
+    outerr = capsys.readouterr()
+    out = outerr.out
+    print(out)
+    assert out == "\n\nCourse successfully added.\n"
 
 
 def test_credit_count():
