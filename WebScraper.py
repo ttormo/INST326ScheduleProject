@@ -11,12 +11,29 @@ ctx.verify_mode = ssl.CERT_NONE
 
 #takes URL, returns the list of the rows of code
 def getHTML(url):
+    """Takes given testudo schedule URL and splits it by line
+    
+    Args:
+    url (string): a testudo link to a specific major's course list
+    
+    Returns:
+    rowList is return, a list of each line from the split HTML
+    """
     html = urllib.request.urlopen(url, context=ctx).read()
     rowList = str(html).split("\\n")
     return rowList
 
 
 def classNames(rowList):
+    """ Takes the lines of HTML from the given website and iterates through, pulling
+    each course id as it goes and saving them to a list called names
+    
+    Args:
+    rowList (list): A list of each line from the HTML
+    
+    Returns:
+    names (list): list of course id's 
+    """
     names=[]
     for line in rowList:
         if '"course-id"'in line:
@@ -28,6 +45,16 @@ def classNames(rowList):
 
 
 def getClassURL(url,class_name):
+     """ Takes the given url and class name and creates a new url for that specific
+     class's info on testudo in order to pull specific class information
+    
+    Args:
+    url (string): A given testudo url to all classes offered for a certain major
+    class_name (string): the course id of a class from the names list
+    
+    Returns:
+    cpage_lines (list): the lines of HTML from the newly created url
+    """
     newURL=str(url)+"/"+str(class_name)
     html = urllib.request.urlopen(newURL, context=ctx).read()
     cpage_lines = str(html).split("\\n")
@@ -37,18 +64,18 @@ def getClassURL(url,class_name):
 def classInfo(course_codes, user_input):
     """Pulls the official names, section numbers, days of the week,
     and start/end times for each course code, skipping over classes with
-    no seats remaining. Two dictionaries are created: one pairing course
-    code with course names, and one pairing course code with the rest of the
-    above listed data. 
+    no seats remaining. A dictionary for all course info is created
     
-    classDict Outline -> course_code:[[course name, section number, day,
+    classDict Outline -> course_code:[[course_code, course name, section id, credits, day,
         start time, end-time],...]
-    Note: Each course code has lists for each section number. Some section numbers
-    may appear in two consecutive lists, indicating that the section meets twice
-    in the same day.
     
     Args:
     course_codes (list): list of course codes
+    user_input (string): the url to the full list of classes for a major
+    
+    returns: 
+    classDict (dict): dictionary of course code as key and course info as value.
+    the course info layout is given in an example above
     """
     classDict={}
     for name in course_codes:
