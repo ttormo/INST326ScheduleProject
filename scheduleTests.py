@@ -1,5 +1,6 @@
 import pytest
 import INST326ScheduleProject
+from WebScraper import classInfo
 
 
 @pytest.fixture
@@ -106,6 +107,10 @@ def test_credit_count(capsys, output_schedule):
     out = outerr.out
     print(out)
     assert out == "Your schedule currently contains 10 credits\n"
+    
+def test_classInfo():
+    """ does classInfo() return the correct class information?"""
+    assert classInfo(['CPSF100'], "https://app.testudo.umd.edu/soc/202108/CPSF") == {"CPSF100":[["CPSF100","College Park Scholars: Life Sciences First-Year Colloquium l","0101","1","W","3:30pm","5:00pm"]]}
 
 
 
