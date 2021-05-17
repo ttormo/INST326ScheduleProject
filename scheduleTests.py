@@ -4,11 +4,15 @@ import INST326ScheduleProject
 
 @pytest.fixture
 def test_schedule():
+    """Creates a schedule based off of the example_schedule.csv file for use
+        with testing."""
     return INST326ScheduleProject.Schedule("example_schedule.csv")
 
 
 @pytest.fixture
 def output_schedule():
+    """Creates a schedule based off of the schedule_for_tests.csv file for use
+            with testing."""
     return INST326ScheduleProject.Schedule("schedule_for_tests.csv")
 
 
@@ -31,6 +35,9 @@ def test_schedule_init_2():
 
 
 def test_print_schedule(capsys, test_schedule):
+    """Does print_schedule() print the provided schedule in the correct
+        format?"""
+
     test_schedule.print_schedule()
     outerr = capsys.readouterr()
     out = outerr.out
@@ -91,7 +98,8 @@ def test_remove_class_2(capsys, output_schedule):
 
 
 def test_credit_count(capsys, output_schedule):
-    """Does credit_count print the correct amount of credits in the student's schedule after they add or removed classes?"""
+    """Does credit_count print the correct amount of credits in the student's
+        schedule?"""
 
     INST326ScheduleProject.credit_count(output_schedule)
     outerr = capsys.readouterr()
